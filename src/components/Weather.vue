@@ -3,14 +3,14 @@
     <div class="weather-side">
       <div class="weather-gradient"></div>
       <div class="date-container">
-        <h2 class="date-dayname">Tuesday</h2>
+        <h2 class="date-dayname"></h2>
         <span class="date-day">15 Jan 2019</span
         ><i class="location-icon" data-feather="map-pin"></i
-        ><span class="location">Paris, FR</span>
+        ><span class="location">Тула, Россия</span>
       </div>
       <div class="weather-container">
         <i class="weather-icon" data-feather="sun"></i>
-        <h1 class="weather-temp">29°C</h1>
+        <h1 class="weather-temp">{{ info.air_temperature }}°C</h1>
         <h3 class="weather-desc">Sunny</h3>
       </div>
     </div>
@@ -18,16 +18,20 @@
       <div class="today-info-container">
         <div class="today-info">
           <div class="precipitation">
-            <span class="title">PRECIPITATION</span
-            ><span class="value">0 %</span>
+            <span class="title">Атм. давление</span
+            ><span class="value"
+              >{{ info.air_pressure_at_sea_level }} мм рт. ст.</span
+            >
             <div class="clear"></div>
           </div>
           <div class="humidity">
-            <span class="title">HUMIDITY</span><span class="value">34 %</span>
+            <span class="title">Влажность</span
+            ><span class="value">{{ info.relative_humidity }} %</span>
             <div class="clear"></div>
           </div>
           <div class="wind">
-            <span class="title">WIND</span><span class="value">0 km/h</span>
+            <span class="title">Скорость ветра</span
+            ><span class="value">{{ info.wind_speed }} м/с</span>
             <div class="clear"></div>
           </div>
         </div>
@@ -54,17 +58,16 @@
         </ul>
       </div>
       <div class="location-container">
-        <button class="location-button">
-          <i data-feather="map-pin"></i><span>Change location</span>
+        <button class="location-button" onClick="location.href=location.href">
+          <i data-feather="map-pin"></i><span>Обновить</span>
         </button>
       </div>
     </div>
-    {{ info }}
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "Weather",
@@ -75,8 +78,14 @@ export default {
   },
   mounted() {
     axios
-      .get("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=60.10&lon=9.58")
-      .then((response) => (this.info = response.data.properties.timeseries.time));
+      .get(
+        "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=54.12&lon=37.37"
+      )
+      .then(
+        (response) =>
+          (this.info =
+            response.data.properties.timeseries[0].data.instant.details)
+      );
   },
 };
 // https://api.met.no/weatherapi
@@ -84,6 +93,9 @@ export default {
 </script>
 
 <style>
+a {
+  text-decoration: none; /* Убираем подчёркивание */
+}
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700,900&display=swap");
 
 :root {
@@ -130,7 +142,8 @@ body {
   position: relative;
   height: 100%;
   border-radius: 25px;
-  background-image: url("https://images.unsplash.com/photo-1559963110-71b394e7494d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80");
+  /* background-image: url("https://images.unsplash.com/photo-1559963110-71b394e7494d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80"); */
+  background-image: url("https://img.geliophoto.com/tula/01_tula.jpg");
   width: 300px;
   -webkit-box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.2);
