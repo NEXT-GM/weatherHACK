@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <HelloWorld msg="123"/> -->
     <Weather> </Weather>
   </div>
 </template>

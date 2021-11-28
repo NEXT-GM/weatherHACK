@@ -15,15 +15,48 @@
             <div class="weather-gradient"></div>
             <div class="date-container">
               <h2 class="date-dayname"></h2>
-              <span class="date-day">{{ time }}</span
-              ><i class="location-icon" data-feather="map-pin"></i
-              ><span class="location">Тула, Россия</span>
+              <span class="date-day">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-calendar3"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"
+                  />
+                  <path
+                    d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                  />
+                </svg>
+                {{ time }}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-geo-alt"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"
+                />
+                <path
+                  d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
+                />
+              </svg>
+              <span class="location">Тула, Россия</span>
             </div>
             <div class="weather-container">
               <i class="weather-icon" data-feather="sun"></i>
-              <h1 class="weather-temp">{{ info.instant.details.air_temperature }} °C</h1>
+              <h1 class="weather-temp">
+                {{ info.timeseries[0].data.instant.details.air_temperature }} °C
+              </h1>
               <h3 class="weather-desc">
-                {{ info.instant.details.cloud_area_fraction }} % облачность
+                {{ info.timeseries[0].data.instant.details.cloud_area_fraction }} % облачность
               </h3>
             </div>
           </div>
@@ -33,18 +66,25 @@
                 <div class="precipitation">
                   <span class="title">Атм. давление</span
                   ><span class="value"
-                    >{{ info.instant.details.air_pressure_at_sea_level }} Па</span
+                    >{{
+                      info.timeseries[0].data.instant.details.air_pressure_at_sea_level
+                    }}
+                    Па</span
                   >
                   <div class="clear"></div>
                 </div>
                 <div class="humidity">
                   <span class="title">Влажность</span
-                  ><span class="value">{{ info.instant.details.relative_humidity }} %</span>
+                  ><span class="value"
+                    >{{ info.timeseries[0].data.instant.details.relative_humidity }} %</span
+                  >
                   <div class="clear"></div>
                 </div>
                 <div class="wind">
                   <span class="title">Скорость ветра</span
-                  ><span class="value">{{ info.instant.details.wind_speed }} м/с</span>
+                  ><span class="value"
+                    >{{ info.timeseries[0].data.instant.details.wind_speed }} м/с</span
+                  >
                   <div class="clear"></div>
                 </div>
               </div>
@@ -52,24 +92,64 @@
             <div class="week-container">
               <ul class="week-list">
                 <li class="active">
-                  <i class="day-icon" data-feather="sun"></i
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    fill="currentColor"
+                    class="bi bi-cloud-fog2"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8.5 4a4.002 4.002 0 0 0-3.8 2.745.5.5 0 1 1-.949-.313 5.002 5.002 0 0 1 9.654.595A3 3 0 0 1 13 13H.5a.5.5 0 0 1 0-1H13a2 2 0 0 0 .001-4h-.026a.5.5 0 0 1-.5-.445A4 4 0 0 0 8.5 4zM0 8.5A.5.5 0 0 1 .5 8h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"
+                    /></svg
                   ><span class="day-name">Вск</span
-                  ><span class="day-temp">1.5 °C</span>
+                  ><span class="day-temp">{{ info.timeseries[17].data.instant.details.air_temperature }} °C</span>
                 </li>
                 <li>
-                  <i class="day-icon" data-feather="cloud"></i
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    fill="currentColor"
+                    class="bi bi-cloud-rain"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M4.158 12.025a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 0 1-.948-.316l1-3a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.317zm3 0a.5.5 0 0 1 .316.633l-1 3a.5.5 0 1 1-.948-.316l1-3a.5.5 0 0 1 .632-.317zm.247-6.998a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 11H13a3 3 0 0 0 .405-5.973zM8.5 2a4 4 0 0 1 3.976 3.555.5.5 0 0 0 .5.445H13a2 2 0 0 1 0 4H3.5a2.5 2.5 0 1 1 .605-4.926.5.5 0 0 0 .596-.329A4.002 4.002 0 0 1 8.5 2z"
+                    /></svg
                   ><span class="day-name">Пон</span
-                  ><span class="day-temp">2 °C</span>
+                  ><span class="day-temp">{{ info.timeseries[41].data.instant.details.air_temperature }} °C</span>
                 </li>
                 <li>
-                  <i class="day-icon" data-feather="cloud-snow"></i
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    fill="currentColor"
+                    class="bi bi-cloud-sleet"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M13.405 4.027a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 10H13a3 3 0 0 0 .405-5.973zM8.5 1a4 4 0 0 1 3.976 3.555.5.5 0 0 0 .5.445H13a2 2 0 0 1 0 4H3.5a2.5 2.5 0 1 1 .605-4.926.5.5 0 0 0 .596-.329A4.002 4.002 0 0 1 8.5 1zM2.375 13.5a.25.25 0 0 1 .25.25v.57l.501-.287a.25.25 0 0 1 .248.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 1 1-.5 0v-.57l-.501.287a.25.25 0 0 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25zm1.849-2.447a.5.5 0 0 1 .223.67l-.5 1a.5.5 0 1 1-.894-.447l.5-1a.5.5 0 0 1 .67-.223zM6.375 13.5a.25.25 0 0 1 .25.25v.57l.501-.287a.25.25 0 0 1 .248.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 1 1-.5 0v-.57l-.501.287a.25.25 0 0 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25zm1.849-2.447a.5.5 0 0 1 .223.67l-.5 1a.5.5 0 1 1-.894-.447l.5-1a.5.5 0 0 1 .67-.223zm2.151 2.447a.25.25 0 0 1 .25.25v.57l.501-.287a.25.25 0 0 1 .248.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 1 1-.5 0v-.57l-.501.287a.25.25 0 0 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25zm1.849-2.447a.5.5 0 0 1 .223.67l-.5 1a.5.5 0 1 1-.894-.447l.5-1a.5.5 0 0 1 .67-.223z"
+                    /></svg
                   ><span class="day-name">Втр</span
-                  ><span class="day-temp">1.2°C</span>
+                  ><span class="day-temp">{{ info.timeseries[60].data.instant.details.air_temperature }} °C</span>
                 </li>
                 <li>
-                  <i class="day-icon" data-feather="cloud-rain"></i
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    fill="currentColor"
+                    class="bi bi-cloud-sleet"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M13.405 4.027a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 10H13a3 3 0 0 0 .405-5.973zM8.5 1a4 4 0 0 1 3.976 3.555.5.5 0 0 0 .5.445H13a2 2 0 0 1 0 4H3.5a2.5 2.5 0 1 1 .605-4.926.5.5 0 0 0 .596-.329A4.002 4.002 0 0 1 8.5 1zM2.375 13.5a.25.25 0 0 1 .25.25v.57l.501-.287a.25.25 0 0 1 .248.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 1 1-.5 0v-.57l-.501.287a.25.25 0 0 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25zm1.849-2.447a.5.5 0 0 1 .223.67l-.5 1a.5.5 0 1 1-.894-.447l.5-1a.5.5 0 0 1 .67-.223zM6.375 13.5a.25.25 0 0 1 .25.25v.57l.501-.287a.25.25 0 0 1 .248.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 1 1-.5 0v-.57l-.501.287a.25.25 0 0 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25zm1.849-2.447a.5.5 0 0 1 .223.67l-.5 1a.5.5 0 1 1-.894-.447l.5-1a.5.5 0 0 1 .67-.223zm2.151 2.447a.25.25 0 0 1 .25.25v.57l.501-.287a.25.25 0 0 1 .248.434l-.495.283.495.283a.25.25 0 0 1-.248.434l-.501-.286v.569a.25.25 0 1 1-.5 0v-.57l-.501.287a.25.25 0 0 1-.248-.434l.495-.283-.495-.283a.25.25 0 0 1 .248-.434l.501.286v-.569a.25.25 0 0 1 .25-.25zm1.849-2.447a.5.5 0 0 1 .223.67l-.5 1a.5.5 0 1 1-.894-.447l.5-1a.5.5 0 0 1 .67-.223z"
+                    /></svg
                   ><span class="day-name">Срд</span
-                  ><span class="day-temp">1 °C</span>
+                  ><span class="day-temp">{{ info.timeseries[64].data.instant.details.air_temperature }} °C</span>
                 </li>
                 <div class="clear"></div>
               </ul>
@@ -123,8 +203,7 @@ export default {
         )
         .then(
           (response) =>
-            (this.info =
-              response.data.properties.timeseries[0].data)
+            (this.info = response.data.properties) 
           //(this.time = response.data.properties.meta.updated_at)
         )
         .catch(() => {
