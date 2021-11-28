@@ -1,91 +1,140 @@
 <template>
-  <div class="container">
-    <div class="weather-side">
-      <div class="weather-gradient"></div>
-      <div class="date-container">
-        <h2 class="date-dayname"></h2>
-        <span class="date-day">15 Jan 2019</span
-        ><i class="location-icon" data-feather="map-pin"></i
-        ><span class="location">Тула, Россия</span>
-      </div>
-      <div class="weather-container">
-        <i class="weather-icon" data-feather="sun"></i>
-        <h1 class="weather-temp">{{ info.air_temperature }}°C</h1>
-        <h3 class="weather-desc">Sunny</h3>
-      </div>
-    </div>
-    <div class="info-side">
-      <div class="today-info-container">
-        <div class="today-info">
-          <div class="precipitation">
-            <span class="title">Атм. давление</span
-            ><span class="value"
-              >{{ info.air_pressure_at_sea_level }} мм рт. ст.</span
-            >
-            <div class="clear"></div>
+  <div>
+    <section v-if="errored">
+      <p>
+        К сожалению, мы не можем загрузить информацию о погоде. Попробуйте ещё
+        раз
+      </p>
+    </section>
+
+    <section v-else>
+      <div v-if="loading">Загрузка...</div>
+      <div v-else>
+        <div class="container">
+          <div class="weather-side">
+            <div class="weather-gradient"></div>
+            <div class="date-container">
+              <h2 class="date-dayname"></h2>
+              <span class="date-day">{{ time }}</span
+              ><i class="location-icon" data-feather="map-pin"></i
+              ><span class="location">Тула, Россия</span>
+            </div>
+            <div class="weather-container">
+              <i class="weather-icon" data-feather="sun"></i>
+              <h1 class="weather-temp">{{ info.instant.details.air_temperature }} °C</h1>
+              <h3 class="weather-desc">
+                {{ info.instant.details.cloud_area_fraction }} % облачность
+              </h3>
+            </div>
           </div>
-          <div class="humidity">
-            <span class="title">Влажность</span
-            ><span class="value">{{ info.relative_humidity }} %</span>
-            <div class="clear"></div>
-          </div>
-          <div class="wind">
-            <span class="title">Скорость ветра</span
-            ><span class="value">{{ info.wind_speed }} м/с</span>
-            <div class="clear"></div>
+          <div class="info-side">
+            <div class="today-info-container">
+              <div class="today-info">
+                <div class="precipitation">
+                  <span class="title">Атм. давление</span
+                  ><span class="value"
+                    >{{ info.instant.details.air_pressure_at_sea_level }} Па</span
+                  >
+                  <div class="clear"></div>
+                </div>
+                <div class="humidity">
+                  <span class="title">Влажность</span
+                  ><span class="value">{{ info.instant.details.relative_humidity }} %</span>
+                  <div class="clear"></div>
+                </div>
+                <div class="wind">
+                  <span class="title">Скорость ветра</span
+                  ><span class="value">{{ info.instant.details.wind_speed }} м/с</span>
+                  <div class="clear"></div>
+                </div>
+              </div>
+            </div>
+            <div class="week-container">
+              <ul class="week-list">
+                <li class="active">
+                  <i class="day-icon" data-feather="sun"></i
+                  ><span class="day-name">Вск</span
+                  ><span class="day-temp">1.5 °C</span>
+                </li>
+                <li>
+                  <i class="day-icon" data-feather="cloud"></i
+                  ><span class="day-name">Пон</span
+                  ><span class="day-temp">2 °C</span>
+                </li>
+                <li>
+                  <i class="day-icon" data-feather="cloud-snow"></i
+                  ><span class="day-name">Втр</span
+                  ><span class="day-temp">1.2°C</span>
+                </li>
+                <li>
+                  <i class="day-icon" data-feather="cloud-rain"></i
+                  ><span class="day-name">Срд</span
+                  ><span class="day-temp">1 °C</span>
+                </li>
+                <div class="clear"></div>
+              </ul>
+            </div>
+            <div class="location-container">
+              <button
+                class="location-button"
+                onClick="location.href=location.href"
+              >
+                <i data-feather="map-pin"></i><span>Обновить</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="week-container">
-        <ul class="week-list">
-          <li class="active">
-            <i class="day-icon" data-feather="sun"></i
-            ><span class="day-name">Tue</span><span class="day-temp">29°C</span>
-          </li>
-          <li>
-            <i class="day-icon" data-feather="cloud"></i
-            ><span class="day-name">Wed</span><span class="day-temp">21°C</span>
-          </li>
-          <li>
-            <i class="day-icon" data-feather="cloud-snow"></i
-            ><span class="day-name">Thu</span><span class="day-temp">08°C</span>
-          </li>
-          <li>
-            <i class="day-icon" data-feather="cloud-rain"></i
-            ><span class="day-name">Fry</span><span class="day-temp">19°C</span>
-          </li>
-          <div class="clear"></div>
-        </ul>
-      </div>
-      <div class="location-container">
-        <button class="location-button" onClick="location.href=location.href">
-          <i data-feather="map-pin"></i><span>Обновить</span>
-        </button>
-      </div>
-    </div>
+    </section>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+//import VueMoment from 'vue-moment'
+import moment from "moment-timezone";
+// 0-100
+// 0-25 ясно
+// 26-50 переменная_облачность
+// 51-75 облачно
+// 76-100 пасмурно
 export default {
   name: "Weather",
   data() {
     return {
-      info: null,
+      info: {},
+      time: "",
+      tempDays: [],
+      loading: true,
+      errored: false,
+      day: 0,
     };
   },
+  filters: {
+    formatDate: function (value) {
+      return value;
+    },
+  },
   mounted() {
-    axios
-      .get(
-        "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=54.12&lon=37.37"
-      )
-      .then(
-        (response) =>
-          (this.info =
-            response.data.properties.timeseries[0].data.instant.details)
-      );
+    if (this.day == 0) {
+      axios
+        .get(
+          "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=54.12&lon=37.37"
+        )
+        .then(
+          (response) =>
+            (this.info =
+              response.data.properties.timeseries[0].data)
+          //(this.time = response.data.properties.meta.updated_at)
+        )
+        .catch(() => {
+          this.errored = true;
+        })
+        .finally(() => (this.loading = false));
+    }
+
+    var date = moment(new Date()).format("DD/MM");
+    this.time = date;
   },
 };
 // https://api.met.no/weatherapi
@@ -95,6 +144,9 @@ export default {
 <style>
 a {
   text-decoration: none; /* Убираем подчёркивание */
+}
+p {
+  color: white;
 }
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700,900&display=swap");
 

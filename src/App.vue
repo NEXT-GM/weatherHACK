@@ -11,7 +11,7 @@ import Weather from "./components/Weather.vue";
 export default {
   name: "App",
   components: {
-    Weather,
+    Weather
   },
 };
 </script>
